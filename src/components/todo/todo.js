@@ -22,49 +22,55 @@ class Todo extends React.Component {
     }
     getValues(){
         axios.get('http://localhost:8000/').then(response=>{
-            console.log("reponse",response.data);
+            // console.log("reponse",response.data);
             // this.setState.list = response.data
-            this.setState({list: response.data})
+            this.setState({list: response.data});
     })
     }
     edit(item) {
-        console.log("update item",item)
+        // console.log("update item",item)
         this.setState({value: item.value, update: true ,id: item.id});
     }
     delete(event) {
-        console.log("event",event);
-        axios.delete('http://localhost:8000/delete/', {params: { id: event.id} }).then(response=>{
-            console.log("responce in delete",response.data);
+        // console.log("event",event);
+        // console.log('http://localhost:8000/delete/', {params: { id: event.id} });
+        axios.delete('http://localhost:8000/delete/'+event.id).then(response=>{
+            // console.log("responce in delete",response.data);
+            this.setState({list: response.data});
         })
     }
     handleChange(event){
-        console.log("event value",event.target.value)
+        // console.log("event value",event.target.value)
         this.setState({value: event.target.value});
        
     }
     handleSubmit(event) {
         // alert("asujhdysja");
-        console.log("this.state.value", this.state.value);
+        // console.log("this.state.value", this.state.value);
         event.preventDefault();
         if(this.state.update == true){
             let obj = {
                 id: this.state.id,
                 value:this.state.value
             }
-            this.setState({update:false , value:''})
+            
+            axios.post('http://localhost:8000/edit',obj).then(response=>{
+                // console.log("edit data response",response.data);
+                this.setState({list:response.data,update:false , value:''});
+            })
         }
         else{
             axios.post('http://localhost:8000/add',{
                 add:this.state.value
             }).then(response=>{
-                console.log("reponse",response.data);
+                // console.log("reponse",response.data);
             // this.setState.list = response.data
             this.setState({list: response.data, value:''})
             })
         }
     }
     onValueChange(e) {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         this.setState({
             value: e.target.value
         })
