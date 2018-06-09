@@ -76,11 +76,14 @@ class Todo extends React.Component {
             value: e.target.value
         })
     }
+    onGreet(){
+        alert("hello taimoor");
+    }
     render() {
 
         return (
 
-             <div><Header homeLinks="Home" />
+             <div><Header homeLinks="Home" greet={this.onGreet} />
             {/* // {Header} */}
             <div className="card cardStyle">
                 <h5 className="card-header">TODO APP {this.state.name}</h5>
