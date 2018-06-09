@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './todo.css';
+import {Header} from '../Header/Header'
 var FontAwesome = require('react-fontawesome');
 // import axios from 'axios'
 var axios = require('axios');
@@ -16,56 +17,56 @@ class Todo extends React.Component {
             clickedValue: ''
         }
         this.getValues();
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    getValues(){
-        axios.get('http://localhost:8000/').then(response=>{
+    getValues() {
+        axios.get('http://localhost:8000/').then(response => {
             // console.log("reponse",response.data);
             // this.setState.list = response.data
-            this.setState({list: response.data});
-    })
+            this.setState({ list: response.data });
+        })
     }
     edit(item) {
         // console.log("update item",item)
-        this.setState({value: item.value, update: true ,id: item.id});
+        this.setState({ value: item.value, update: true, id: item.id });
     }
     delete(event) {
         // console.log("event",event);
         // console.log('http://localhost:8000/delete/', {params: { id: event.id} });
-        axios.delete('http://localhost:8000/delete/'+event.id).then(response=>{
+        axios.delete('http://localhost:8000/delete/' + event.id).then(response => {
             // console.log("responce in delete",response.data);
-            this.setState({list: response.data});
+            this.setState({ list: response.data });
         })
     }
-    handleChange(event){
+    handleChange(event) {
         // console.log("event value",event.target.value)
-        this.setState({value: event.target.value});
-       
+        this.setState({ value: event.target.value });
+
     }
     handleSubmit(event) {
         // alert("asujhdysja");
         // console.log("this.state.value", this.state.value);
         event.preventDefault();
-        if(this.state.update == true){
+        if (this.state.update == true) {
             let obj = {
                 id: this.state.id,
-                value:this.state.value
+                value: this.state.value
             }
-            
-            axios.post('http://localhost:8000/edit',obj).then(response=>{
+
+            axios.post('http://localhost:8000/edit', obj).then(response => {
                 // console.log("edit data response",response.data);
-                this.setState({list:response.data,update:false , value:''});
+                this.setState({ list: response.data, update: false, value: '' });
             })
         }
-        else{
-            axios.post('http://localhost:8000/add',{
-                add:this.state.value
-            }).then(response=>{
+        else {
+            axios.post('http://localhost:8000/add', {
+                add: this.state.value
+            }).then(response => {
                 // console.log("reponse",response.data);
-            // this.setState.list = response.data
-            this.setState({list: response.data, value:''})
+                // this.setState.list = response.data
+                this.setState({ list: response.data, value: '' })
             })
         }
     }
@@ -78,6 +79,9 @@ class Todo extends React.Component {
     render() {
 
         return (
+
+             <div><Header homeLinks="Home" />
+            {/* // {Header} */}
             <div className="card cardStyle">
                 <h5 className="card-header">TODO APP {this.state.name}</h5>
                 <div className="card-body">
@@ -85,8 +89,8 @@ class Todo extends React.Component {
                         <div className="input-group" >
                             <input type="text" className="form-control" value={this.state.value} onChange={this.handleChange} placeholder="Value" />
                             {
-                                (this.state.update) ?  <button className="btn btn-default" type="submit" value="Submit">Update</button> :
-                                <button className="btn btn-default" type="submit" value="Submit">Add</button>
+                                (this.state.update) ? <button className="btn btn-default" type="submit" value="Submit">Update</button> :
+                                    <button className="btn btn-default" type="submit" value="Submit">Add</button>
                             }
                         </div>
                     </form>
@@ -95,10 +99,10 @@ class Todo extends React.Component {
                         {
                             this.state.list.map((item, i) => {
                                 return (<div key={i} className="inline"><div className="values"><p className="list">{item.value}</p></div>
-                                <div style={ {width: '12%'}}>
-                                <button type="button" style={{width: '50%',height:'98%'}} onClick={()=>this.edit(item)} className="btn">  <FontAwesome className='super-crazy-colors editIcon' name='edit' size='1x' style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}/></button>
-                                <button type="button" style={{width: '50%',height:'98%'}} onClick={()=>this.delete(item)} className="btn"> <FontAwesome className='super-crazy-colors editIcon' name='times' size='1x' style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}/></button>
-                                </div>
+                                    <div style={{ width: '12%' }}>
+                                        <button type="button" style={{ width: '50%', height: '98%' }} onClick={() => this.edit(item)} className="btn">  <FontAwesome className='super-crazy-colors editIcon' name='edit' size='1x' style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }} /></button>
+                                        <button type="button" style={{ width: '50%', height: '98%' }} onClick={() => this.delete(item)} className="btn"> <FontAwesome className='super-crazy-colors editIcon' name='times' size='1x' style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }} /></button>
+                                    </div>
                                 </div>
                                 )
                             })
@@ -108,7 +112,8 @@ class Todo extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+            </div> 
+        );
     }
 }
 
